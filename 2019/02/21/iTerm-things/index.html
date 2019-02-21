@@ -408,19 +408,6 @@
           
             
             
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/02/21/iTerm-things/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/02/21/iTerm-things/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
           
 
           
@@ -449,7 +436,7 @@
 <li>open iTerm2</li>
 <li>cd ~</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 以下命令：逐条执行完成 就可以啦 👻</span></span><br><span class="line"></span><br><span class="line">curl -O https://raw.githubusercontent.com/donnemartin/dev-setup/master/.bash_profile</span><br><span class="line">curl -O https://raw.githubusercontent.com/donnemartin/dev-setup/master/.bash_prompt</span><br><span class="line">curl -O https://raw.githubusercontent.com/donnemartin/dev-setup/master/.aliases</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 以下命令：逐条执行完成 就可以啦 👻</span><br><span class="line"></span><br><span class="line">curl -O https://raw.githubusercontent.com/donnemartin/dev-setup/master/.bash_profile</span><br><span class="line">curl -O https://raw.githubusercontent.com/donnemartin/dev-setup/master/.bash_prompt</span><br><span class="line">curl -O https://raw.githubusercontent.com/donnemartin/dev-setup/master/.aliases</span><br></pre></td></tr></table></figure>
 <ul>
 <li>安装 oh-my-zsh 、 Powerline (vim 插件)、Monoisome Regular 字体、agnosterzak zsh主题</li>
 <li>选择 solarized 配色方案</li>
@@ -550,13 +537,6 @@
 
           </div>
           
-
-  
-    <div class="comments" id="comments">
-      
-        <div id="gitment-container"></div>
-      
-    </div>
 
   
 
@@ -841,47 +821,6 @@
 
   
 
-
-  
-    <!-- LOCAL: You can save these files to your site and update links -->
-
-  
-  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitmint.browser.js"></script>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
-<!-- END LOCAL -->
-
-<style>
-#gitment-container a {
-  border-bottom: none;
-}
-
-</style>
-
-<script>
-  function renderGitment() {
-    var gitment = new Gitmint({
-      id: window.location.pathname,
-      owner: 'AllenTango',
-      repo: 'allentango.github.io',
-      
-        lang: '' || navigator.language || navigator.systemLanguage || navigator.userLanguage,
-      
-      oauth: {
-      
-      
-        client_secret: 'b9bcf8d95e6eed24551c840c7517948e56585005',
-      
-        client_id: '6439429e6f86516bd86a'
-      }
-    });
-    gitment.render('gitment-container');
-  }
-
-  
-    renderGitment();
-  
-</script>
 
   
 
