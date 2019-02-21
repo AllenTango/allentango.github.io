@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title><![CDATA[iTerm 美化]]></title>
-    <url>%2F2019%2F02%2F21%2FiTerm%20%E7%BE%8E%E5%8C%96%2F</url>
+    <url>%2F2019%2F02%2F21%2FiTerm-things%2F</url>
     <content type="text"><![CDATA[iTerm2 美化 open iTerm2 cd ~ 12345# 以下命令：逐条执行完成 就可以啦 👻curl -O https://raw.githubusercontent.com/donnemartin/dev-setup/master/.bash_profilecurl -O https://raw.githubusercontent.com/donnemartin/dev-setup/master/.bash_promptcurl -O https://raw.githubusercontent.com/donnemartin/dev-setup/master/.aliases 安装 oh-my-zsh 、 Powerline (vim 插件)、Monoisome Regular 字体、agnosterzak zsh主题 选择 solarized 配色方案 shell 常用命令1234567891011ls # 罗列当前目录内容cd # 切换目录pwd # 展示当前目录touch # 创建文件mkdir # 创建文件夹mv # 移动文件rm # 删除文件atom # 使用 atom 打开文件编辑open # 打开文件clear # 清屏sudo #]]></content>
       <tags>
         <tag>Notes</tag>
