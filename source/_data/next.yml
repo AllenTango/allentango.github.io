@@ -564,7 +564,7 @@ gitment:
   github_user: AllenTango # MUST HAVE, Your Github Username
   github_repo: allentango.github.io # MUST HAVE, The name of the repo you use to store Gitment comments
   client_id: 6439429e6f86516bd86a # MUST HAVE, Github client id for the Gitment
-  client_secret: b9bcf8d95e6eed24551c840c7517948e56585005 # EITHER this or proxy_gateway, Github access secret token for the Gitment
+  client_secret: 8a8144ea71864f61577aa00b014012c19c8ad072 # EITHER this or proxy_gateway, Github access secret token for the Gitment
   proxy_gateway: # Address of api proxy, See: https://github.com/aimingoo/intersect
   redirect_protocol: # Protocol of redirect_uri with force_redirect_protocol when mint enabled
 
