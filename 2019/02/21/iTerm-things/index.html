@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Allen&#39;s Blog">
 <meta property="og:description" content="iTerm2 美化 open iTerm2 cd ~  12345# 以下命令：逐条执行完成 就可以啦 👻curl -O https://raw.githubusercontent.com/donnemartin/dev-setup/master/.bash_profilecurl -O https://raw.githubusercontent.com/donnemartin/dev-setu">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-05T17:16:54.309Z">
+<meta property="og:updated_time" content="2019-03-06T07:23:17.780Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iTerm 美化">
 <meta name="twitter:description" content="iTerm2 美化 open iTerm2 cd ~  12345# 以下命令：逐条执行完成 就可以啦 👻curl -O https://raw.githubusercontent.com/donnemartin/dev-setup/master/.bash_profilecurl -O https://raw.githubusercontent.com/donnemartin/dev-setu">
@@ -410,7 +410,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-03-06 01:16:54" itemprop="dateModified" datetime="2019-03-06T01:16:54+08:00">2019-03-06</time>
+                <time title="修改时间：2019-03-06 15:23:17" itemprop="dateModified" datetime="2019-03-06T15:23:17+08:00">2019-03-06</time>
               
             
           </span>
@@ -419,19 +419,6 @@
 
           
             
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/02/21/iTerm-things/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/02/21/iTerm-things/" itemprop="commentCount"></span>
-                </a>
-              </span>
             
           
 
@@ -563,10 +550,7 @@
           
 
   
-    <div class="comments" id="comments">
-      
-        <div id="gitment-container"></div>
-      
+    <div class="comments" id="gitalk-container">
     </div>
 
   
@@ -854,44 +838,29 @@
 
 
   
-    <!-- LOCAL: You can save these files to your site and update links -->
+    
 
-  
-  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitmint.browser.js"></script>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
-<!-- END LOCAL -->
 
-<style>
-#gitment-container a {
-  border-bottom: none;
-}
 
-</style>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
 
 <script>
-  function renderGitment() {
-    var gitment = new Gitmint({
-      id: window.location.pathname,
-      owner: 'AllenTango',
-      repo: 'allentango.github.io',
-      
-        lang: '' || navigator.language || navigator.systemLanguage || navigator.userLanguage,
-      
-      oauth: {
-      
-      
-        client_secret: '8a8144ea71864f61577aa00b014012c19c8ad072',
-      
-        client_id: '6439429e6f86516bd86a'
-      }
-    });
-    gitment.render('gitment-container');
-  }
-
-  
-    renderGitment();
-  
+  var gitalk = new Gitalk({
+    clientID: '6439429e6f86516bd86a',
+    clientSecret: '8a8144ea71864f61577aa00b014012c19c8ad072',
+    repo: 'allentango.github.io',
+    owner: 'AllenTango',
+    admin: ['AllenTango'],
+    id: md5(location.pathname),
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
 </script>
 
   
