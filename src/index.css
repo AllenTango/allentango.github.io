@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  #root {
+    @apply flex flex-col h-screen justify-between;
+  }
+  .header {
+    @apply sticky top-0 z-10 border-b border-gray-200 bg-white shadow;
+  }
+  .main {
+    /* height: calc(100vh - theme('spacing.7')); */
+    @apply container max-w-7xl mx-auto py-6 sm:px-6 lg:px-8;
+  }
+  .post {
+    @apply container overflow-scroll mx-auto my-4 p-2 bg-transparent rounded-lg shadow cursor-pointer;
+  }
+  .label {
+    @apply p-1 text-xs border-2 opacity-80 rounded-full mx-2;
+  }
+  .footer {
+    @apply bg-pink-50 flex flex-col items-center justify-center lg:px-8 px-4 py-4 sm:px-6;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply border-pink-500 border-l-4 py-1 pl-2 font-bold text-pink-500 my-4;
+  }
+  h1 {
+    @apply text-3xl;
+  }
+  h2 {
+    @apply text-2xl;
+  }
+  h3 {
+    @apply text-xl;
+  }
+  h4 {
+    @apply text-lg;
+  }
+  p {
+    @apply p-1;
+    color: #3e3e3e;
+  }
+  img {
+    @apply mx-auto p-1 rounded-lg;
+  }
+  ul,
+  ol {
+    @apply p-2 list-inside rounded shadow text-pink-400;
+  }
+  ul li {
+    @apply list-disc;
+  }
+  ol li {
+    @apply list-decimal;
+  }
+  table {
+    @apply w-full p-2 text-left border-collapse;
+  }
+  thead {
+    @apply border-b border-pink-500;
+  }
+  tbody tr {
+    @apply border-b;
+  }
+  .post a {
+    @apply p-1 border-b-2 hover:border-purple-500 text-purple-600;
+  }
+}
