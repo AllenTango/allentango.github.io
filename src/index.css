@@ -10,11 +10,10 @@
     @apply sticky top-0 z-10 border-b border-gray-200 bg-white shadow;
   }
   .main {
-    /* height: calc(100vh - theme('spacing.7')); */
     @apply container max-w-7xl mx-auto py-6 sm:px-6 lg:px-8;
   }
   .post {
-    @apply container overflow-scroll mx-auto my-4 p-2 bg-transparent rounded-lg shadow cursor-pointer;
+    @apply container overflow-scroll mx-auto my-4 p-2 bg-transparent rounded-lg shadow;
   }
   .label {
     @apply p-1 text-xs border-2 opacity-80 rounded-full mx-2;
@@ -45,6 +44,12 @@
   p {
     @apply p-1;
     color: #3e3e3e;
+  }
+  hr {
+    @apply my-4 border-b-2 border-pink-100;
+  }
+  blockquote {
+    @apply px-4 py-3 bg-pink-200 border-l-8 border-pink-400;
   }
   img {
     @apply mx-auto p-1 rounded-lg;
