@@ -3,6 +3,8 @@ name: React Deploy CI
 on:
   push:
     branches: [ react ]
+  pull_request:
+    branches: [ react ]
 
 jobs:
   build:
