@@ -1,21 +1,40 @@
-name: Deploy to Github Pages
+name: React Deploy CI
 
-on: push
+on:
+  push:
+    branches: [ react ]
 
 jobs:
-  deploy:
-    name: Deploying to Github Pages
+  build:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [14.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
     steps:
-      - name: Checkout branch
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: |
+          **/node_modules
+        key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Authorizing Github action
-        with:
-          token: "${{ secrets.GITHUB_TOKEN }}"
-        uses: oleksiyrudenko/gha-git-credentials@v1
+    - name: Install dependencies
+      run: npm install
 
-      - name: Doploy to GitHub Pages
-        uses: amitsingh-007/deploy-to-github-pages@v1.1
+    - name: Build
+      run: npm run build
+    
+    - name: Deploy
+      run:
+        git remote set-url origin https://${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}@github.com/allentango.github.io
+        npm run deploy
