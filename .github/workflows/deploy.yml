@@ -3,8 +3,6 @@ name: React Deploy CI
 on:
   push:
     branches: [ react ]
-  pull_request:
-    branches: [ react ]
 
 jobs:
   build:
@@ -38,5 +36,5 @@ jobs:
 
     - name: Deploy
       run: |
-        git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/AllenTango/allentango.github.io/
+        git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/AllenTango/
         npm run deploy
