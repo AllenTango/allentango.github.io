@@ -36,6 +36,6 @@ jobs:
     
     - name: Deploy
       run:
-        git --work-tree build add --all
-        git --work-tree build commit -m 'deploy files'
+        git --work-tree=build add --all
+        git --work-tree=build commit -m 'deploy files'
         git push origin HEAD:master --force
