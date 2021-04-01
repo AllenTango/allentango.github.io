@@ -36,5 +36,5 @@ jobs:
     
     - name: Deploy
       run:
-        git remote set-url origin https://${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}@github.com/allentango.github.io
+        git remote set-url --push master https://${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}@github.com/allentango.github.io
         npm run deploy
