@@ -13,7 +13,7 @@
     @apply container max-w-7xl mx-auto py-6 sm:px-6 lg:px-8;
   }
   .post {
-    @apply container overflow-scroll mx-auto my-4 p-2 bg-transparent rounded-lg shadow;
+    @apply container overflow-scroll mx-auto my-4 p-2 lg:p-4 bg-transparent rounded-lg shadow-lg;
   }
   .label {
     @apply p-1 text-xs border-2 opacity-80 rounded-full mx-2;

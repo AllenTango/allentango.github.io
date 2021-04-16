@@ -50,42 +50,25 @@ function Post({ title, body, labels, created_time, origin_url }) {
         />
       </div>
       <div
-        className="text-pink-500 cursor-pointer flex justify-center items-start border-t-4 rounded-b-2xl mt-2 shadow-lg"
-        onClick={() => setShowDetail(!showDetail)}
+        className={showDetail ? "hidden" : "text-pink-500 cursor-pointer flex justify-center flex-wrap mt-4"}
+        onClick={() => setShowDetail(true)}
       >
-        {!showDetail ? (
-          <div className="down h-12 w-12">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </div>
-        ) : (
-          <div className="up h-12 w-12">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 15l7-7 7 7"
-              />
-            </svg>
-          </div>
-        )}
+        <div class="w-full text-center text-xl font-semibold border-t-4 border-dashed border-pink-500 pt-2">点击展开详情</div>
+        <div className="down h-12 w-12 -mt-1">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </div>
       </div>
     </div>
   );
