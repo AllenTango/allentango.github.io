@@ -50,11 +50,11 @@ function Post({ title, body, labels, created_time, origin_url }) {
         />
       </div>
       <div
-        className={showDetail ? "hidden" : "text-pink-500 cursor-pointer flex justify-center flex-wrap mt-4"}
+        className={showDetail ? "hidden" : "text-pink-500 cursor-pointer -mt-5 pt-4 bg-white bg-opacity-80 z-50"}
         onClick={() => setShowDetail(true)}
       >
-        <div class="w-full text-center text-xl font-semibold border-t-4 border-dashed border-pink-500 pt-2">点击展开详情</div>
-        <div className="down h-12 w-12 -mt-1">
+        <div class="w-full text-center text-lg font-semibold border-t-4 border-dashed border-pink-500 pt-2">点击展开详情</div>
+        <div className="hidden down h-12 w-12 -mt-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
