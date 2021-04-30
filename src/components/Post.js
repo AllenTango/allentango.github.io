@@ -12,7 +12,7 @@ const renderers = {
         language={language}
         children={value}
         showLineNumbers={true}
-        wrapLongLines={true}
+        wrapLongLines={false}
       />
     );
   },
