@@ -1,0 +1,45 @@
+name: Build and Deploy to main
+
+on:
+  push:
+    branches: [memoria-site]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout memoria-site
+        uses: actions/checkout@v4
+        with:
+          ref: memoria-site
+
+      - name: Checkout Memoria CLI
+        uses: actions/checkout@v4
+        with:
+          repository: AllenTango/memoria
+          path: memoria
+          ref: main
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Memoria CLI
+        run: |
+          cd memoria && npm install && npm link
+
+      - name: Install site dependencies
+        run: npm install
+
+      - name: Generate static site
+        run: memoria generate
+
+      - name: Deploy dist/ to main branch
+        run: |
+          cd dist && git init && git config user.name "github-actions[bot]" && git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A && git commit -m "Deploy from memoria-site @ ${{ github.sha }}"
+          git push -f https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:main
