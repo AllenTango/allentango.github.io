@@ -13,9 +13,9 @@ description: "验证博客文章中的本地图片引用是否能正常显示。
 
 在 Markdown 中直接使用相对路径引用 `public/images/` 目录下的图片：
 
-![博客占位图](/public/images/blog-placeholder.jpg)
+![博客占位图](/public/images/blog-placeholder.png)
 
-上面是一张在 `public/images/blog-placeholder.jpg` 的图片，通过 `/public/images/blog-placeholder.jpg` 路径引用。
+上面是一张在 `public/images/blog-placeholder.png` 的图片，通过 `/public/images/blog-placeholder.png` 路径引用。
 
 ## 多图展示
 
