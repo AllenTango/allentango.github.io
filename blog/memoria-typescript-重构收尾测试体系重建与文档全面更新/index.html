@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Memoria TypeScript 重构收尾：测试体系重建与文档全面更新 — Memoria</title>
+  <link rel="icon" href="/public/images/memoria-icon.png" type="image/png" />
+  <link rel="stylesheet" href="/layout.css" />
+  <link rel="stylesheet" href="/colors.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/dracula.min.css" />
+</head>
+<body>
+  <!-- Desktop Header Nav -->
+  <header class="site-header" id="siteHeader">
+    <a href="/" class="nav-brand">Memoria</a>
+    <nav class="nav-links">
+      <a href="/" class="nav-link">首页</a>
+      <a href="/blogs.html" class="nav-link active">随笔</a>
+      <a href="/vlogs.html" class="nav-link">影像</a>
+      <a href="/photos.html" class="nav-link">相册</a>
+      <a href="/about.html" class="nav-link">关于</a>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content" id="mainContent">
+    
+    <div class="detail-page">
+      <h1 class="detail-title">Memoria TypeScript 重构收尾：测试体系重建与文档全面更新</h1>
+      <div class="detail-meta"><time datetime="2026-05-29">2026年5月29日</time><span class="tag">里程碑</span><span class="tag">TypeScript</span><span class="tag">文档</span><span class="tag">测试</span></div>
+      
+      
+      <div class="prose"><p>今天完成了 Memoria 从 JavaScript 到 TypeScript 重构的最后几块拼图。记录一下这几天做的东西。</p>
+<h2>一、测试体系重建</h2>
+<p>之前 memoria 只有两三个 shell 脚本做冒烟测试，浅得不能再浅。这次写了一个完整的 TS 集成测试脚本 <code>memoria-integration-test.ts</code>，26 项测试全覆盖：</p>
+<ul>
+<li>CLI 所有命令的正确性（<code>init</code> / <code>generate</code> / <code>clean</code> / <code>new blog/vlog/photo</code> 等）</li>
+<li>frontmatter 格式验证（<code>type</code> 字段补上了）</li>
+<li>三种内容类型的渲染验证</li>
+<li>重复初始化的报错验证</li>
+</ul>
+<p>交互式输入也模拟了——用 <code>spawn</code> + <code>stdin.write</code> 向 readline 写入预设行，不用等用户输入就能跑自动化测试。</p>
+<p><strong>测试在 CI 里运行，开发阶段也能随时跑。</strong></p>
+<h2>二、文档全面更新</h2>
+<p>原来 docs 下的文档很多还是 JS 版本的引用，全改成了 TS 版本：</p>
+<ul>
+<li><code>getting-started.md</code> — 补充了 <code>npm run build</code> 步骤（TS 源码要先编译）</li>
+<li><code>content-guide.md</code> — 三种 content 的 frontmatter 补全了 <code>type</code> 字段</li>
+<li><code>architecture.md</code> / <code>developer.md</code> — <code>.js</code> → <code>.ts</code> 全部改完</li>
+<li>新增 <code>testing.md</code> — 测试指南，让后来者知道怎么跑测试</li>
+</ul>
+<h2>三、GitHub Pages 文档站</h2>
+<p>用 GitHub Actions 自动把 <code>docs/</code> 目录部署到 GitHub Pages，访问 <code>https://allentango.github.io/memoria/</code> 即可在线浏览文档。</p>
+<p>单页文档站实现了 Dracula（暗黑）和 Peach（明亮）双主题切换，左侧导航，右侧内容，Markdown 自动渲染成 HTML。</p>
+<h2>四、memoria-site 持续迭代</h2>
+<p>这个 blog 站本身就是 memoria 的第一个真实用户案例。今天 blog 页的时间轴布局修复了，dot 位置、卡片间距、左右对齐全部调顺了。</p>
+<hr>
+<p>总结一句话：<strong>今天把 memoria 从&quot;能跑&quot;变成了&quot;能用且专业&quot;。</strong> 🚀</p>
+</div>
+      <nav class="detail-nav">
+        <div class="detail-nav-prev"><a href="/blog/时间轴布局修复笔记/" class="detail-nav-btn">← 时间轴布局修复笔记</a></div>
+        <div class="detail-nav-next"><span class="detail-nav-placeholder"></span></div>
+      </nav>
+    </div>
+  </main>
+
+  <!-- Mobile Bottom Tab Navigation (icon-only) -->
+  <nav class="bottom-nav" id="bottomNav">
+    <a href="/" class="nav-tab" data-page="home">
+      <i data-lucide="home"></i>
+    </a>
+    <a href="/blogs.html" class="nav-tab active" data-page="blogs">
+      <i data-lucide="align-left"></i>
+    </a>
+    <a href="/vlogs.html" class="nav-tab" data-page="vlogs">
+      <i data-lucide="play-circle"></i>
+    </a>
+    <a href="/photos.html" class="nav-tab" data-page="photo">
+      <i data-lucide="image"></i>
+    </a>
+    <a href="/about.html" class="nav-tab" data-page="about">
+      <i data-lucide="user"></i>
+    </a>
+  </nav>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" aria-label="关闭">✕</button>
+    <button class="lightbox-prev" onclick="event.stopPropagation(); lightboxNav(-1)">‹</button>
+    <div class="lightbox-content" id="lightboxContent"></div>
+    <button class="lightbox-next" onclick="event.stopPropagation(); lightboxNav(1)">›</button>
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.lucide) lucide.createIcons();
+      document.querySelectorAll('pre code').forEach(function(block) {
+        if (window.hljs) hljs.highlightElement(block);
+      });
+      document.addEventListener('keydown', function(e) {
+        var lb = document.getElementById('lightbox');
+        if (!lb || !lb.classList.contains('open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') lightboxNav(-1);
+        if (e.key === 'ArrowRight') lightboxNav(1);
+      });
+
+      /* ── Home tag filter ─────────────────────────────────── */
+      var filterBar = document.getElementById('tagFilterBar');
+      if (filterBar) {
+        filterBar.addEventListener('click', function(e) {
+          var btn = e.target.closest('.tag-filter-btn');
+          if (!btn) return;
+          var tag = btn.dataset.tag;
+          filterBar.querySelectorAll('.tag-filter-btn').forEach(function(b) {
+            b.classList.toggle('active', b === btn);
+          });
+          document.querySelectorAll('[data-item-tags]').forEach(function(item) {
+            var tags = item.dataset.itemTags ? item.dataset.itemTags.split(',') : [];
+            item.classList.toggle('hidden', tag !== 'all' && !tags.includes(tag));
+          });
+        });
+      }
+    });
+
+    /* ── Lightbox ─────────────────────────────────────────────── */
+    var allPhotos = window.__memoriaPhotos = window.__memoriaPhotos || [];
+    var currentPhoto = 0;
+
+    function openLightbox(idx) {
+      currentPhoto = idx;
+      var lb = document.getElementById('lightbox');
+      var content = document.getElementById('lightboxContent');
+      var caption = document.getElementById('lightboxCaption');
+      if (!lb || !content) return;
+      content.innerHTML = '<img src="' + allPhotos[idx].url + '" alt="" loading="lazy">';
+      caption.textContent = allPhotos[idx].caption || '';
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      var lb = document.getElementById('lightbox');
+      if (lb) lb.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function lightboxNav(dir) {
+      currentPhoto = (currentPhoto + dir + allPhotos.length) % allPhotos.length;
+      var content = document.getElementById('lightboxContent');
+      var caption = document.getElementById('lightboxCaption');
+      content.innerHTML = '<img src="' + allPhotos[currentPhoto].url + '" alt="" loading="lazy">';
+      caption.textContent = allPhotos[currentPhoto].caption || '';
+    }
+    window.openLightbox = openLightbox;
+    window.closeLightbox = closeLightbox;
+    window.lightboxNav = lightboxNav;
+
+    function setPhotoView(view) {
+      document.querySelectorAll('.view-btn').forEach(function(b) {
+        b.classList.toggle('active', b.dataset.view === view);
+      });
+      var wall = document.getElementById('photoWall');
+      var album = document.getElementById('albumView');
+      if (view === 'album') {
+        if (wall) wall.style.display = 'none';
+        if (album) album.style.display = '';
+      } else {
+        if (wall) wall.style.display = '';
+        var grid = document.getElementById('photoGrid');
+        if (grid) grid.className = 'photo-wall-grid ' + view;
+        if (album) album.style.display = 'none';
+      }
+    }
+    window.setPhotoView = setPhotoView;
+
+    /* ── Mobile sentinel: show '已经到底啦' briefly then hide ── */
+    function initMobileSentinel() {
+      var sentinel = document.querySelector('.scroll-sentinel');
+      if (!sentinel) return;
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            sentinel.textContent = '已经到底啦！';
+            sentinel.classList.add('scroll-no-more');
+            setTimeout(function() {
+              sentinel.style.display = 'none';
+              observer.disconnect();
+            }, 2000);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '200px' });
+      observer.observe(sentinel);
+    }
+    initMobileSentinel();
+  </script>
+</body>
+</html>

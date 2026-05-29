@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>时间轴布局修复笔记 — Memoria</title>
+  <link rel="icon" href="/public/images/memoria-icon.png" type="image/png" />
+  <link rel="stylesheet" href="/layout.css" />
+  <link rel="stylesheet" href="/colors.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/dracula.min.css" />
+</head>
+<body>
+  <!-- Desktop Header Nav -->
+  <header class="site-header" id="siteHeader">
+    <a href="/" class="nav-brand">Memoria</a>
+    <nav class="nav-links">
+      <a href="/" class="nav-link">首页</a>
+      <a href="/blogs.html" class="nav-link active">随笔</a>
+      <a href="/vlogs.html" class="nav-link">影像</a>
+      <a href="/photos.html" class="nav-link">相册</a>
+      <a href="/about.html" class="nav-link">关于</a>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content" id="mainContent">
+    
+    <div class="detail-page">
+      <h1 class="detail-title">时间轴布局修复笔记</h1>
+      <div class="detail-meta"><time datetime="2026-05-26">2026年5月26日</time><span class="tag">CSS</span><span class="tag">调试</span><span class="tag">Memoria</span></div>
+      
+      
+      <div class="prose"><h2>问题背景</h2>
+<p>Memoria 的桌面端时间轴（Timeline）出现了布局异常：</p>
+<ol>
+<li><strong>卡片与锚点（dot）方向不匹配</strong> — 标注说 <code>data-side=right</code> 应在视图右侧，但实际显示在左侧</li>
+<li><strong>锚点（dot）不在时间轴白线上</strong> — dot 偏离轴线，甚至贴在卡片边框上</li>
+<li><strong>锚点过密</strong> — dot 和卡片看起来分离，视觉关联感弱</li>
+</ol>
+<h2>核心问题：CSS 定位模型理解偏差</h2>
+<p>时间轴的结构是：</p>
+<ul>
+<li><code>.timeline-entries</code> — 容器，轴线居中（<code>left: 50%</code>）</li>
+<li><code>.timeline-entry</code> — 每个条目，宽度为容器的 50%</li>
+<li><code>.timeline-node</code> / <code>.timeline-dot</code> — 锚点，期望在轴线上</li>
+</ul>
+<p>之前的 CSS 用 <code>align-self: flex-end/start</code> 来定位 entry，但 <strong>flexbox 的 <code>align-self</code> 只是让元素靠 flex 容器末端对齐，并不能让元素边缘精准对齐 50% 边界</strong>。</p>
+<p>同时，<code>data-side</code> 的语义也容易混淆：</p>
+<ul>
+<li><code>data-side=left</code> = 内容在<strong>视图左侧</strong>（卡片在左，entry 左对齐）</li>
+<li><code>data-side=right</code> = 内容在<strong>视图右侧</strong>（卡片在右，entry 右对齐）</li>
+</ul>
+<h2>解决过程</h2>
+<h3>第一步：修复 dot 位置</h3>
+<p>把 <code>.timeline-entry</code> 从 <code>width: 50%</code> + <code>align-self: flex-end/start</code> 改为 <strong>绝对定位</strong>：</p>
+<pre><code class="language-css">/* 用 left/right 50% 让 entry 边缘精准对齐轴线 */
+.timeline-entry[data-side=&quot;right&quot;] {
+  position: absolute;
+  left: 50%;
+}
+.timeline-entry[data-side=&quot;left&quot;] {
+  position: absolute;
+  right: 50%;
+}
+
+/* dot 居中于轴线 */
+.timeline-node {
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+</code></pre>
+<p>这样 dot 中心精准对齐 600px 处（轴线）。</p>
+<h3>第二步：确定 <code>data-side</code> 的正确语义</h3>
+<p>经过反复调试确认：</p>
+<ul>
+<li><code>data-side=left</code> → 卡片在<strong>视图左侧</strong>，entry 左对齐，dot 在 entry 右边缘</li>
+<li><code>data-side=right</code> → 卡片在<strong>视图右侧</strong>，entry 右对齐，dot 在 entry 左边缘</li>
+</ul>
+<p>这与 <code>Window.orientation</code> 的语义一致：<code>left</code> = -90°，<code>right</code> = 90°。</p>
+<h3>第三步：调整视觉间距</h3>
+<p>用户反馈 dot 过密、与卡片分离。解决方案：</p>
+<ul>
+<li><strong>dot 保持在轴线上</strong>（不偏移 dot）</li>
+<li><strong>卡片轻微远离轴线</strong>：左侧 <code>padding-left: 15px</code>，右侧 <code>padding-right: 15px</code></li>
+</ul>
+<p>这样 dot 和卡片的视觉关联更紧密，同时 dot 始终在时间轴上。</p>
+<h3>第四步：清理冗余 CSS</h3>
+<p>删除两处冗余：</p>
+<ol>
+<li><code>.site-footer</code> 重复声明（连续两行完全相同）</li>
+<li><code>.scroll-sentinel</code> / <code>.scroll-no-more</code> 移动端样式（实际未被使用）</li>
+</ol>
+<h2>最终结果</h2>
+<table>
+<thead>
+<tr>
+<th>修复项</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>卡片方向</td>
+<td>✅ <code>data-side=left</code> 在视图左侧，<code>data-side=right</code> 在视图右侧</td>
+</tr>
+<tr>
+<td>dot 位置</td>
+<td>✅ dot 精准在时间轴白线上</td>
+</tr>
+<tr>
+<td>dot 大小</td>
+<td>✅ 从 14px 增大到 18px，更醒目</td>
+</tr>
+<tr>
+<td>卡片间距</td>
+<td>✅ 卡片轻微远离轴线，视觉更舒适</td>
+</tr>
+<tr>
+<td>CSS 冗余</td>
+<td>✅ 删除重复规则</td>
+</tr>
+</tbody></table>
+<h2>经验总结</h2>
+<ol>
+<li><strong>Flexbox <code>align-self</code> 做不到精准定位</strong>：想让元素边缘精确对齐某个百分比位置，用 <code>position: absolute</code> + <code>left/right: 50%</code> 更可靠</li>
+<li><strong>transform 的百分比是相对于自身</strong>：所以 <code>translate(-50%, -50%)</code> 能让 dot 中心对齐边缘，这正是我们想要的</li>
+<li><strong><code>data-side</code> 的语义要明确</strong>：<code>left</code>/ <code>right</code> 指的是内容在哪一侧，不是对齐方向</li>
+<li><strong>调试时善用截图</strong>：每次修复后用截图确认，避免反复试错</li>
+</ol>
+<h2>相关文件</h2>
+<ul>
+<li><code>/themes/dracula/layout.css</code> — 时间轴样式</li>
+<li><code>/dist/layout.css</code> — 构建输出（与源文件同步）</li>
+<li><code>/src/renderer.js</code> — 时间轴 HTML 生成逻辑</li>
+</ul>
+</div>
+      <nav class="detail-nav">
+        <div class="detail-nav-prev"><a href="/blog/memoria-本地资源引用测试/" class="detail-nav-btn">← Memoria 本地资源引用测试</a></div>
+        <div class="detail-nav-next"><a href="/blog/memoria-typescript-重构收尾测试体系重建与文档全面更新/" class="detail-nav-btn">Memoria TypeScript 重构收尾：测试体系重建与文档全面更新 →</a></div>
+      </nav>
+    </div>
+  </main>
+
+  <!-- Mobile Bottom Tab Navigation (icon-only) -->
+  <nav class="bottom-nav" id="bottomNav">
+    <a href="/" class="nav-tab" data-page="home">
+      <i data-lucide="home"></i>
+    </a>
+    <a href="/blogs.html" class="nav-tab active" data-page="blogs">
+      <i data-lucide="align-left"></i>
+    </a>
+    <a href="/vlogs.html" class="nav-tab" data-page="vlogs">
+      <i data-lucide="play-circle"></i>
+    </a>
+    <a href="/photos.html" class="nav-tab" data-page="photo">
+      <i data-lucide="image"></i>
+    </a>
+    <a href="/about.html" class="nav-tab" data-page="about">
+      <i data-lucide="user"></i>
+    </a>
+  </nav>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" aria-label="关闭">✕</button>
+    <button class="lightbox-prev" onclick="event.stopPropagation(); lightboxNav(-1)">‹</button>
+    <div class="lightbox-content" id="lightboxContent"></div>
+    <button class="lightbox-next" onclick="event.stopPropagation(); lightboxNav(1)">›</button>
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.lucide) lucide.createIcons();
+      document.querySelectorAll('pre code').forEach(function(block) {
+        if (window.hljs) hljs.highlightElement(block);
+      });
+      document.addEventListener('keydown', function(e) {
+        var lb = document.getElementById('lightbox');
+        if (!lb || !lb.classList.contains('open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') lightboxNav(-1);
+        if (e.key === 'ArrowRight') lightboxNav(1);
+      });
+
+      /* ── Home tag filter ─────────────────────────────────── */
+      var filterBar = document.getElementById('tagFilterBar');
+      if (filterBar) {
+        filterBar.addEventListener('click', function(e) {
+          var btn = e.target.closest('.tag-filter-btn');
+          if (!btn) return;
+          var tag = btn.dataset.tag;
+          filterBar.querySelectorAll('.tag-filter-btn').forEach(function(b) {
+            b.classList.toggle('active', b === btn);
+          });
+          document.querySelectorAll('[data-item-tags]').forEach(function(item) {
+            var tags = item.dataset.itemTags ? item.dataset.itemTags.split(',') : [];
+            item.classList.toggle('hidden', tag !== 'all' && !tags.includes(tag));
+          });
+        });
+      }
+    });
+
+    /* ── Lightbox ─────────────────────────────────────────────── */
+    var allPhotos = window.__memoriaPhotos = window.__memoriaPhotos || [];
+    var currentPhoto = 0;
+
+    function openLightbox(idx) {
+      currentPhoto = idx;
+      var lb = document.getElementById('lightbox');
+      var content = document.getElementById('lightboxContent');
+      var caption = document.getElementById('lightboxCaption');
+      if (!lb || !content) return;
+      content.innerHTML = '<img src="' + allPhotos[idx].url + '" alt="" loading="lazy">';
+      caption.textContent = allPhotos[idx].caption || '';
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      var lb = document.getElementById('lightbox');
+      if (lb) lb.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function lightboxNav(dir) {
+      currentPhoto = (currentPhoto + dir + allPhotos.length) % allPhotos.length;
+      var content = document.getElementById('lightboxContent');
+      var caption = document.getElementById('lightboxCaption');
+      content.innerHTML = '<img src="' + allPhotos[currentPhoto].url + '" alt="" loading="lazy">';
+      caption.textContent = allPhotos[currentPhoto].caption || '';
+    }
+    window.openLightbox = openLightbox;
+    window.closeLightbox = closeLightbox;
+    window.lightboxNav = lightboxNav;
+
+    function setPhotoView(view) {
+      document.querySelectorAll('.view-btn').forEach(function(b) {
+        b.classList.toggle('active', b.dataset.view === view);
+      });
+      var wall = document.getElementById('photoWall');
+      var album = document.getElementById('albumView');
+      if (view === 'album') {
+        if (wall) wall.style.display = 'none';
+        if (album) album.style.display = '';
+      } else {
+        if (wall) wall.style.display = '';
+        var grid = document.getElementById('photoGrid');
+        if (grid) grid.className = 'photo-wall-grid ' + view;
+        if (album) album.style.display = 'none';
+      }
+    }
+    window.setPhotoView = setPhotoView;
+
+    /* ── Mobile sentinel: show '已经到底啦' briefly then hide ── */
+    function initMobileSentinel() {
+      var sentinel = document.querySelector('.scroll-sentinel');
+      if (!sentinel) return;
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            sentinel.textContent = '已经到底啦！';
+            sentinel.classList.add('scroll-no-more');
+            setTimeout(function() {
+              sentinel.style.display = 'none';
+              observer.disconnect();
+            }, 2000);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '200px' });
+      observer.observe(sentinel);
+    }
+    initMobileSentinel();
+  </script>
+</body>
+</html>

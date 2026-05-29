@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>2026 五一假期纪录 — Memoria</title>
+  <link rel="icon" href="/public/images/memoria-icon.png" type="image/png" />
+  <link rel="stylesheet" href="/layout.css" />
+  <link rel="stylesheet" href="/colors.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/dracula.min.css" />
+</head>
+<body>
+  <!-- Desktop Header Nav -->
+  <header class="site-header" id="siteHeader">
+    <a href="/" class="nav-brand">Memoria</a>
+    <nav class="nav-links">
+      <a href="/" class="nav-link">首页</a>
+      <a href="/blogs.html" class="nav-link">随笔</a>
+      <a href="/vlogs.html" class="nav-link">影像</a>
+      <a href="/photos.html" class="nav-link active">相册</a>
+      <a href="/about.html" class="nav-link">关于</a>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content" id="mainContent">
+    
+    <div class="detail-page">
+      <h1 class="detail-title">2026 五一假期纪录</h1>
+      <div class="detail-meta"><time datetime="2026-05-01">2026年5月1日</time><span class="tag">假期</span><span class="tag">旅行</span></div>
+      
+      <div class="photo-grid-detail"><div class="detail-photo-item" onclick="openLightbox(0)"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800" alt="海边日落" loading="lazy"><div class="detail-photo-caption">海边日落</div></div><div class="detail-photo-item" onclick="openLightbox(1)"><img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800" alt="美食之旅" loading="lazy"><div class="detail-photo-caption">美食之旅</div></div><div class="detail-photo-item" onclick="openLightbox(2)"><img src="https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=800" alt="威尼斯的清晨" loading="lazy"><div class="detail-photo-caption">威尼斯的清晨</div></div><div class="detail-photo-item" onclick="openLightbox(3)"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800" alt="沙滩漫步" loading="lazy"><div class="detail-photo-caption">沙滩漫步</div></div></div>
+      <nav class="detail-nav">
+        <div class="detail-nav-prev"><span class="detail-nav-placeholder"></span></div>
+        <div class="detail-nav-next"><span class="detail-nav-placeholder"></span></div>
+      </nav>
+      <script>window.__memoriaPhotos=[{"url":"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800","caption":"海边日落"},{"url":"https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800","caption":"美食之旅"},{"url":"https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=800","caption":"威尼斯的清晨"},{"url":"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800","caption":"沙滩漫步"}];</script>
+    </div>
+  </main>
+
+  <!-- Mobile Bottom Tab Navigation (icon-only) -->
+  <nav class="bottom-nav" id="bottomNav">
+    <a href="/" class="nav-tab" data-page="home">
+      <i data-lucide="home"></i>
+    </a>
+    <a href="/blogs.html" class="nav-tab" data-page="blogs">
+      <i data-lucide="align-left"></i>
+    </a>
+    <a href="/vlogs.html" class="nav-tab" data-page="vlogs">
+      <i data-lucide="play-circle"></i>
+    </a>
+    <a href="/photos.html" class="nav-tab active" data-page="photo">
+      <i data-lucide="image"></i>
+    </a>
+    <a href="/about.html" class="nav-tab" data-page="about">
+      <i data-lucide="user"></i>
+    </a>
+  </nav>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" aria-label="关闭">✕</button>
+    <button class="lightbox-prev" onclick="event.stopPropagation(); lightboxNav(-1)">‹</button>
+    <div class="lightbox-content" id="lightboxContent"></div>
+    <button class="lightbox-next" onclick="event.stopPropagation(); lightboxNav(1)">›</button>
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.lucide) lucide.createIcons();
+      document.querySelectorAll('pre code').forEach(function(block) {
+        if (window.hljs) hljs.highlightElement(block);
+      });
+      document.addEventListener('keydown', function(e) {
+        var lb = document.getElementById('lightbox');
+        if (!lb || !lb.classList.contains('open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') lightboxNav(-1);
+        if (e.key === 'ArrowRight') lightboxNav(1);
+      });
+
+      /* ── Home tag filter ─────────────────────────────────── */
+      var filterBar = document.getElementById('tagFilterBar');
+      if (filterBar) {
+        filterBar.addEventListener('click', function(e) {
+          var btn = e.target.closest('.tag-filter-btn');
+          if (!btn) return;
+          var tag = btn.dataset.tag;
+          filterBar.querySelectorAll('.tag-filter-btn').forEach(function(b) {
+            b.classList.toggle('active', b === btn);
+          });
+          document.querySelectorAll('[data-item-tags]').forEach(function(item) {
+            var tags = item.dataset.itemTags ? item.dataset.itemTags.split(',') : [];
+            item.classList.toggle('hidden', tag !== 'all' && !tags.includes(tag));
+          });
+        });
+      }
+    });
+
+    /* ── Lightbox ─────────────────────────────────────────────── */
+    var allPhotos = window.__memoriaPhotos = window.__memoriaPhotos || [];
+    var currentPhoto = 0;
+
+    function openLightbox(idx) {
+      currentPhoto = idx;
+      var lb = document.getElementById('lightbox');
+      var content = document.getElementById('lightboxContent');
+      var caption = document.getElementById('lightboxCaption');
+      if (!lb || !content) return;
+      content.innerHTML = '<img src="' + allPhotos[idx].url + '" alt="" loading="lazy">';
+      caption.textContent = allPhotos[idx].caption || '';
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      var lb = document.getElementById('lightbox');
+      if (lb) lb.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function lightboxNav(dir) {
+      currentPhoto = (currentPhoto + dir + allPhotos.length) % allPhotos.length;
+      var content = document.getElementById('lightboxContent');
+      var caption = document.getElementById('lightboxCaption');
+      content.innerHTML = '<img src="' + allPhotos[currentPhoto].url + '" alt="" loading="lazy">';
+      caption.textContent = allPhotos[currentPhoto].caption || '';
+    }
+    window.openLightbox = openLightbox;
+    window.closeLightbox = closeLightbox;
+    window.lightboxNav = lightboxNav;
+
+    function setPhotoView(view) {
+      document.querySelectorAll('.view-btn').forEach(function(b) {
+        b.classList.toggle('active', b.dataset.view === view);
+      });
+      var wall = document.getElementById('photoWall');
+      var album = document.getElementById('albumView');
+      if (view === 'album') {
+        if (wall) wall.style.display = 'none';
+        if (album) album.style.display = '';
+      } else {
+        if (wall) wall.style.display = '';
+        var grid = document.getElementById('photoGrid');
+        if (grid) grid.className = 'photo-wall-grid ' + view;
+        if (album) album.style.display = 'none';
+      }
+    }
+    window.setPhotoView = setPhotoView;
+
+    /* ── Mobile sentinel: show '已经到底啦' briefly then hide ── */
+    function initMobileSentinel() {
+      var sentinel = document.querySelector('.scroll-sentinel');
+      if (!sentinel) return;
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            sentinel.textContent = '已经到底啦！';
+            sentinel.classList.add('scroll-no-more');
+            setTimeout(function() {
+              sentinel.style.display = 'none';
+              observer.disconnect();
+            }, 2000);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '200px' });
+      observer.observe(sentinel);
+    }
+    initMobileSentinel();
+  </script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Memoria 本地资源引用测试 — Memoria</title>
+  <link rel="icon" href="/public/images/memoria-icon.png" type="image/png" />
+  <link rel="stylesheet" href="/layout.css" />
+  <link rel="stylesheet" href="/colors.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/dracula.min.css" />
+</head>
+<body>
+  <!-- Desktop Header Nav -->
+  <header class="site-header" id="siteHeader">
+    <a href="/" class="nav-brand">Memoria</a>
+    <nav class="nav-links">
+      <a href="/" class="nav-link">首页</a>
+      <a href="/blogs.html" class="nav-link active">随笔</a>
+      <a href="/vlogs.html" class="nav-link">影像</a>
+      <a href="/photos.html" class="nav-link">相册</a>
+      <a href="/about.html" class="nav-link">关于</a>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content" id="mainContent">
+    
+    <div class="detail-page">
+      <h1 class="detail-title">Memoria 本地资源引用测试</h1>
+      <div class="detail-meta"><time datetime="2026-05-25">2026年5月25日</time><span class="tag">测试</span><span class="tag">功能验证</span><span class="tag">本地资源</span></div>
+      
+      
+      <div class="prose"><h2>测试目的</h2>
+<p>验证 Memoria 是否支持在 Markdown 文章中引用本地文件目录下的图片资源。</p>
+<h2>本地图片引用示例</h2>
+<p>在 Markdown 中直接使用相对路径引用 <code>public/images/</code> 目录下的图片：</p>
+<p><img src="/public/images/blog-placeholder.png" alt="博客占位图"></p>
+<p>上面是一张在 <code>public/images/blog-placeholder.png</code> 的图片，通过 <code>/public/images/blog-placeholder.png</code> 路径引用。</p>
+<h2>多图展示</h2>
+<div class="content-slideshow" id="cs_0fhtfj45w" data-current="0"><button class="content-slideshow-prev" onclick="csNav('cs_0fhtfj45w','csPhotos_0fhtfj45w',-1)" aria-label="上一张">‹</button><button class="content-slideshow-next" onclick="csNav('cs_0fhtfj45w','csPhotos_0fhtfj45w',1)" aria-label="下一张">›</button><div class="content-slideshow-main"><img src="/public/images/photo-1.jpg" alt="照片1"></div><div class="content-slideshow-dots"><span class="content-slideshow-dot active" data-idx="0"></span><span class="content-slideshow-dot" data-idx="1"></span></div></div><script>var csPhotos_0fhtfj45w=[{"url":"/public/images/photo-1.jpg","caption":"照片1"},{"url":"/public/images/photo-2.jpg","caption":"照片2"}];function csNav(cid,pv,dir){var c=parseInt(document.getElementById(cid).getAttribute("data-current"))||0;var photos=window[pv];var n=(c+dir+photos.length)%photos.length;var p=photos[n];var main=document.getElementById(cid).querySelector(".content-slideshow-main");if(p&&main)main.innerHTML="<img src="+p.url+" alt="+p.caption+">";document.getElementById(cid).querySelectorAll(".content-slideshow-dot").forEach(function(d,i){d.classList.toggle("active",i===n);});document.getElementById(cid).setAttribute("data-current",n);}</script>
+<h2>验证方法</h2>
+<ol>
+<li>构建：<code>npm run build</code></li>
+<li>检查 <code>dist/public/images/</code> 目录是否包含所有图片文件</li>
+<li>在浏览器中打开 <code>dist/index.html</code>，确认图片正常显示</li>
+</ol>
+<h2>技术细节</h2>
+<ul>
+<li>资源文件统一放在项目根目录的 <code>public/</code> 下</li>
+<li>构建时 <code>public/</code> 目录会被完整复制到 <code>dist/public/</code></li>
+<li>引用路径使用绝对路径（以 <code>/public/</code> 开头）</li>
+<li>这样无论 HTML 文件在哪个子目录，都能正确找到资源</li>
+</ul>
+<p>如果图片能正常显示，说明本地资源引用功能工作正常 ✅</p>
+</div>
+      <nav class="detail-nav">
+        <div class="detail-nav-prev"><a href="/blog/memoria-静态网站生成器发布/" class="detail-nav-btn">← Memoria 静态网站生成器发布</a></div>
+        <div class="detail-nav-next"><a href="/blog/时间轴布局修复笔记/" class="detail-nav-btn">时间轴布局修复笔记 →</a></div>
+      </nav>
+    </div>
+  </main>
+
+  <!-- Mobile Bottom Tab Navigation (icon-only) -->
+  <nav class="bottom-nav" id="bottomNav">
+    <a href="/" class="nav-tab" data-page="home">
+      <i data-lucide="home"></i>
+    </a>
+    <a href="/blogs.html" class="nav-tab active" data-page="blogs">
+      <i data-lucide="align-left"></i>
+    </a>
+    <a href="/vlogs.html" class="nav-tab" data-page="vlogs">
+      <i data-lucide="play-circle"></i>
+    </a>
+    <a href="/photos.html" class="nav-tab" data-page="photo">
+      <i data-lucide="image"></i>
+    </a>
+    <a href="/about.html" class="nav-tab" data-page="about">
+      <i data-lucide="user"></i>
+    </a>
+  </nav>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" aria-label="关闭">✕</button>
+    <button class="lightbox-prev" onclick="event.stopPropagation(); lightboxNav(-1)">‹</button>
+    <div class="lightbox-content" id="lightboxContent"></div>
+    <button class="lightbox-next" onclick="event.stopPropagation(); lightboxNav(1)">›</button>
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.lucide) lucide.createIcons();
+      document.querySelectorAll('pre code').forEach(function(block) {
+        if (window.hljs) hljs.highlightElement(block);
+      });
+      document.addEventListener('keydown', function(e) {
+        var lb = document.getElementById('lightbox');
+        if (!lb || !lb.classList.contains('open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') lightboxNav(-1);
+        if (e.key === 'ArrowRight') lightboxNav(1);
+      });
+
+      /* ── Home tag filter ─────────────────────────────────── */
+      var filterBar = document.getElementById('tagFilterBar');
+      if (filterBar) {
+        filterBar.addEventListener('click', function(e) {
+          var btn = e.target.closest('.tag-filter-btn');
+          if (!btn) return;
+          var tag = btn.dataset.tag;
+          filterBar.querySelectorAll('.tag-filter-btn').forEach(function(b) {
+            b.classList.toggle('active', b === btn);
+          });
+          document.querySelectorAll('[data-item-tags]').forEach(function(item) {
+            var tags = item.dataset.itemTags ? item.dataset.itemTags.split(',') : [];
+            item.classList.toggle('hidden', tag !== 'all' && !tags.includes(tag));
+          });
+        });
+      }
+    });
+
+    /* ── Lightbox ─────────────────────────────────────────────── */
+    var allPhotos = window.__memoriaPhotos = window.__memoriaPhotos || [];
+    var currentPhoto = 0;
+
+    function openLightbox(idx) {
+      currentPhoto = idx;
+      var lb = document.getElementById('lightbox');
+      var content = document.getElementById('lightboxContent');
+      var caption = document.getElementById('lightboxCaption');
+      if (!lb || !content) return;
+      content.innerHTML = '<img src="' + allPhotos[idx].url + '" alt="" loading="lazy">';
+      caption.textContent = allPhotos[idx].caption || '';
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      var lb = document.getElementById('lightbox');
+      if (lb) lb.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function lightboxNav(dir) {
+      currentPhoto = (currentPhoto + dir + allPhotos.length) % allPhotos.length;
+      var content = document.getElementById('lightboxContent');
+      var caption = document.getElementById('lightboxCaption');
+      content.innerHTML = '<img src="' + allPhotos[currentPhoto].url + '" alt="" loading="lazy">';
+      caption.textContent = allPhotos[currentPhoto].caption || '';
+    }
+    window.openLightbox = openLightbox;
+    window.closeLightbox = closeLightbox;
+    window.lightboxNav = lightboxNav;
+
+    function setPhotoView(view) {
+      document.querySelectorAll('.view-btn').forEach(function(b) {
+        b.classList.toggle('active', b.dataset.view === view);
+      });
+      var wall = document.getElementById('photoWall');
+      var album = document.getElementById('albumView');
+      if (view === 'album') {
+        if (wall) wall.style.display = 'none';
+        if (album) album.style.display = '';
+      } else {
+        if (wall) wall.style.display = '';
+        var grid = document.getElementById('photoGrid');
+        if (grid) grid.className = 'photo-wall-grid ' + view;
+        if (album) album.style.display = 'none';
+      }
+    }
+    window.setPhotoView = setPhotoView;
+
+    /* ── Mobile sentinel: show '已经到底啦' briefly then hide ── */
+    function initMobileSentinel() {
+      var sentinel = document.querySelector('.scroll-sentinel');
+      if (!sentinel) return;
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            sentinel.textContent = '已经到底啦！';
+            sentinel.classList.add('scroll-no-more');
+            setTimeout(function() {
+              sentinel.style.display = 'none';
+              observer.disconnect();
+            }, 2000);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '200px' });
+      observer.observe(sentinel);
+    }
+    initMobileSentinel();
+  </script>
+</body>
+</html>
